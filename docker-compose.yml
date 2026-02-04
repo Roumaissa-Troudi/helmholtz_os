@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db:
+    image: ankane/pgvector:latest
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: tomo
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  computer-use-mcp:
+    build:
+      context: .
+      dockerfile: docker/computer-use-mcp/Dockerfile
+    environment:
+      DISPLAY: ${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+    network_mode: host
+    stdin_open: true
+    tty: true
+
+volumes:
+  db-data:
